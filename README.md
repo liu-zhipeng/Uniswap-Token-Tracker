@@ -1,2 +1,2 @@
-# Uniswap-Token-Tracker
-Subgraph to fetch token info listed on Uniswap, PancakeSwap, etc
+# Uniswap Token Tracker listed on Uniswap and Pancakeswap
+
