@@ -5,34 +5,15 @@ import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, UNTRACKED_PAIRS } from 
 
 const WETH_ADDRESS = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
 const USDC_WETH_PAIR = '0xd99c7F6C65857AC913a8f880A4cb84032AB2FC5b' 
-const DAI_WETH_PAIR = '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3' 
-const USDT_WETH_PAIR = '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16' // BUSD-WETH pair on BSC
+const DAI_WETH_PAIR = '0xc7c3cCCE4FA25700fD5574DA7E200ae28BBd36A3' 
+export const USDT_WETH_PAIR = '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16' // BUSD-WETH pair on BSC
 
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
-  let daiPair = Pair.load(DAI_WETH_PAIR) // dai is token0
-  let usdcPair = Pair.load(USDC_WETH_PAIR) // usdc is token0
   let usdtPair = Pair.load(USDT_WETH_PAIR) // usdt is token1
 
-  // all 3 have been created
-  if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
-    let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-    let usdtWeight = usdtPair.reserve0.div(totalLiquidityETH)
-    return daiPair.token0Price
-      .times(daiWeight)
-      .plus(usdcPair.token0Price.times(usdcWeight))
-      .plus(usdtPair.token1Price.times(usdtWeight))
-    // dai and USDC have been created
-  } else if (daiPair !== null && usdcPair !== null) {
-    let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1)
-    let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-    return daiPair.token0Price.times(daiWeight).plus(usdcPair.token0Price.times(usdcWeight))
-    // USDC is the only pair so far
-  } else if (usdcPair !== null) {
-    return usdcPair.token0Price
+  if (USDT_WETH_PAIR) {
+    return usdtPair.token0Price
   } else {
     return ZERO_BD
   }
